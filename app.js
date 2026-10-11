@@ -52,7 +52,7 @@ const INVITATIONS = [
   },
   {
     id: 'walking', kind: 'move', name: 'Going on a walk', line: 'No destination needed.', sizes: ['few', 'half', 'open'],
-    icon: svg('<path d="M8 20c0-4 8-4 8-8s-6-3-6-7"/><circle cx="17" cy="5" r="2"/>'),
+    icon: svg('<path d="M7.200 3.500c1.700 0 2.500 1.500 2.500 3.500s-.800 3.500-2.500 3.500S4.700 9 4.700 7s.800-3.500 2.500-3.500z"/><path d="M5.700 12.500h3v1a1.500 1.500 0 0 1-3 0z"/><g transform="translate(9.600 5.500)"><path d="M7.200 3.500c1.700 0 2.500 1.500 2.500 3.500s-.800 3.500-2.500 3.500S4.700 9 4.700 7s.800-3.500 2.500-3.500z"/><path d="M5.700 12.500h3v1a1.500 1.500 0 0 1-3 0z"/></g>'),
     thoughts: [
       'Around the block, phone in a pocket or left at home.',
       'Turn down a street you usually pass.',
@@ -180,7 +180,7 @@ const INVITATIONS = [
   },
   {
     id: 'dancing', kind: 'move', name: 'Dancing', line: 'No music needed.', sizes: ['few'],
-    icon: svg('<circle cx="12" cy="5.500" r="2"/><path d="M4 8l3.500 3.500L12 10l4.500-1.500L20 12"/><path d="M12 10v5M12 15l-3 5M12 15l3 5"/>'),
+    icon: svg('<circle cx="12" cy="5" r="2"/><path d="M5.500 8.500l2.700 2.700L12 9.800l3.800-1.300 2.700 2.700"/><path d="M12 9.800v4.700M12 14.500l-3 6M12 14.500l3 6"/>'),
     thoughts: [
       'Shake it off: hands, arms, shoulders, the whole thing. Thirty seconds.',
       'No music needed. Move however your body wants to, badly and gladly.',
