@@ -179,6 +179,36 @@ const INVITATIONS = [
     ],
   },
   {
+    id: 'dancing', kind: 'move', name: 'Dancing', line: 'No music needed.', sizes: ['few'],
+    icon: svg('<circle cx="12" cy="5.500" r="2"/><path d="M4 8l3.500 3.500L12 10l4.500-1.500L20 12"/><path d="M12 10v5M12 15l-3 5M12 15l3 5"/>'),
+    thoughts: [
+      'Shake it off: hands, arms, shoulders, the whole thing. Thirty seconds.',
+      'No music needed. Move however your body wants to, badly and gladly.',
+      'Let loose until you laugh or run out of breath, whichever comes first.',
+      'Notice how good it is to have a body that can do this.',
+    ],
+  },
+  {
+    id: 'wish', kind: 'connect', name: 'Sending a wish', line: 'Hold someone in your heart.', sizes: ['few'],
+    icon: svg('<path d="M9.500 20v-8.500h5V20M7 20h10"/><path d="M12 9c-1.300-1-1.300-2.500 0-4.500 1.300 2 1.300 3.500 0 4.500z"/>'),
+    thoughts: [
+      'Bring one person to mind. Picture their face, and wish them an easy day.',
+      'Hold someone in your heart for three breaths. They do not need to know.',
+      'Think of someone who is having a hard time. Send them a little strength.',
+      'Silently, to someone you love: may you be well, may you be at ease.',
+    ],
+  },
+  {
+    id: 'kalimba', kind: 'still', name: 'Playing the kalimba', line: 'A few notes, going nowhere.', sizes: ['few'],
+    icon: svg('<rect x="5.500" y="4" width="13" height="16" rx="3"/><path d="M9 4v8M12 4v11M15 4v8"/>'),
+    thoughts: [
+      'Pluck a few notes and let each one ring out before the next.',
+      'No song, no goal. Follow whatever sounds nice.',
+      'Find two notes you like together and go back and forth between them.',
+      'Play with your eyes closed for a minute.',
+    ],
+  },
+  {
     id: 'resting', kind: 'still', name: 'Resting', line: 'Nothing at all is also something.', sizes: ['few', 'half'],
     icon: svg('<path d="M19 14.500A7.500 7.500 0 0 1 9.500 5a7.500 7.500 0 1 0 9.500 9.500z"/>'),
     thoughts: [
