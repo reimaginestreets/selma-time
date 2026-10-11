@@ -152,7 +152,7 @@ const INVITATIONS = [
   },
   {
     id: 'noticing', kind: 'still', name: 'Looking out', line: 'A window and a few minutes.', sizes: ['few'],
-    icon: svg('<path d="M6.500 21V10.500h2V8h2V5.500h3V8h2v2.500h2V21z"/><path d="M12 8.500v1.500M9.800 13.500v3.500M14.200 13.500v3.500"/>'),
+    icon: svg('<rect x="5.500" y="5" width="13" height="14.500" rx="1"/><path d="M3.500 5h17M4 19.500h16"/><path d="M10 5c0 4.500-1.500 7.500-4.500 9M14 5c0 4.500 1.500 7.500 4.500 9"/>'),
     thoughts: [
       'Stand at the window. What is the sky doing?',
       'Watch the street the way you would watch a film.',
