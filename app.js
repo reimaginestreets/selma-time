@@ -17,9 +17,11 @@ const PLUS_ICON = svg('<path d="M12 6v12M6 12h12"/>');
 
 // sizes: few = a few minutes, half = half an hour or so, open = an open stretch.
 // Each invitation has a few thoughts; one is shown at a time.
+// kind: make, connect, move or still. It sets the tile colour and the "It'd be nice to…" filter.
+// The order mixes the kinds so the colours are spread around the grid.
 const INVITATIONS = [
   {
-    id: 'reading', name: 'Reading', line: 'A few pages, on paper.', sizes: ['few', 'half', 'open'],
+    id: 'reading', kind: 'still', name: 'Reading', line: 'A few pages, on paper.', sizes: ['few', 'half', 'open'],
     icon: svg('<path d="M12 7c-2-1.5-5-2-8-1.5v12c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-12c-3-.5-6 0-8 1.5z"/><path d="M12 7v12"/>'),
     thoughts: [
       'Pick up the book that is already open somewhere in the house.',
@@ -29,7 +31,7 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'writing', name: 'Writing', line: 'The scholarly kind, unhurried.', sizes: ['half', 'open'],
+    id: 'writing', kind: 'make', name: 'Writing', line: 'The scholarly kind, unhurried.', sizes: ['half', 'open'],
     icon: svg('<path d="M12 21l-4.500-8L10 5h4l2.500 8z"/><path d="M12 21v-6.500"/><circle cx="12" cy="13" r="1.300"/><path d="M10 5V3h4v2"/>'),
     thoughts: [
       'One paragraph, by hand first. It does not have to be the next paragraph.',
@@ -39,47 +41,7 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'journaling', name: 'Journaling', line: 'A page for no one else.', sizes: ['few', 'half'],
-    icon: svg('<rect x="6" y="4" width="13" height="16" rx="2"/><path d="M9 4v16M12 9h4M12 12.500h4"/>'),
-    thoughts: [
-      'What is on your mind right now? Start mid-sentence.',
-      'Describe the room you are in, as if for someone who has never seen it.',
-      'What did today ask of you? What did it give back?',
-      'Write three lines and stop, even if there is more.',
-    ],
-  },
-  {
-    id: 'haiku', name: 'Writing a haiku', line: 'Five, seven, five. That is all.', sizes: ['few', 'half'],
-    icon: svg('<path d="M8 7h8M5 12h14M8 17h8"/>'),
-    thoughts: [
-      'Look around for one small thing, and give it seventeen syllables.',
-      'Write one about the weather outside the window right now.',
-      'Count the syllables on your fingers. It is part of the pleasure.',
-      'Write one for someone, and tuck it where they will find it.',
-    ],
-  },
-  {
-    id: 'lettering', name: 'Lettering', line: 'A letter or a postcard.', sizes: ['few', 'half', 'open'],
-    icon: svg('<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3.500 7.500 12 13l8.500-5.500"/>'),
-    thoughts: [
-      'Who would be surprised to find your handwriting in their post box?',
-      'A postcard only needs three sentences. One of them can be about the weather.',
-      'Tell someone about one small thing you saw this week.',
-      'Begin with “I thought of you when…”',
-    ],
-  },
-  {
-    id: 'crafting', name: 'Crafting', line: 'Something made by hand.', sizes: ['half', 'open'],
-    icon: svg('<circle cx="7" cy="7" r="2.500"/><circle cx="7" cy="17" r="2.500"/><path d="M9 8.500 20 17M9 15.500 20 7"/>'),
-    thoughts: [
-      'Lay the materials out first. See what they suggest.',
-      'Pick up the project that is closest to hand, not the one that is most behind.',
-      'Make something small enough to finish, or do one small part of something large.',
-      'It does not have to turn out.',
-    ],
-  },
-  {
-    id: 'connecting', name: 'Connecting', line: 'Reach out to someone you love.', sizes: ['few', 'half'],
+    id: 'connecting', kind: 'connect', name: 'Connecting', line: 'Reach out to someone you love.', sizes: ['few', 'half'],
     icon: svg('<path d="M5.500 5.500h13A1.500 1.500 0 0 1 20 7v8a1.500 1.500 0 0 1-1.500 1.500H12l-4 3.500v-3.500H5.500A1.500 1.500 0 0 1 4 15V7a1.500 1.500 0 0 1 1.500-1.500z"/>'),
     thoughts: [
       'Who crossed your mind this week? Tell them so.',
@@ -89,17 +51,7 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'hug', name: 'Sharing a hug', line: 'A long one, with Karthik.', sizes: ['few'],
-    icon: svg('<circle cx="9" cy="7" r="2.500"/><circle cx="15" cy="7" r="2.500"/><path d="M4.500 19v-3a4.500 4.500 0 0 1 7.500-3.300A4.500 4.500 0 0 1 19.500 16v3"/><path d="M8.500 16.500h7"/>'),
-    thoughts: [
-      'Go and find Karthik. Stay a few breaths longer than usual.',
-      'No reason needed. Let the hug be the whole plan.',
-      'Hold on until you both feel your shoulders drop.',
-      'If Karthik is not nearby, send word that one is waiting.',
-    ],
-  },
-  {
-    id: 'walking', name: 'Going on a walk', line: 'No destination needed.', sizes: ['few', 'half', 'open'],
+    id: 'walking', kind: 'move', name: 'Going on a walk', line: 'No destination needed.', sizes: ['few', 'half', 'open'],
     icon: svg('<path d="M8 20c0-4 8-4 8-8s-6-3-6-7"/><circle cx="17" cy="5" r="2"/>'),
     thoughts: [
       'Around the block, phone in a pocket or left at home.',
@@ -109,27 +61,17 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'stretching', name: 'Stretching', line: 'Unfold a little.', sizes: ['few'],
-    icon: svg('<circle cx="12" cy="5" r="2"/><path d="M12 8v7M12 10 7 6M12 10l5-4M12 15l-3 5M12 15l3 5"/>'),
+    id: 'journaling', kind: 'make', name: 'Journaling', line: 'A page for no one else.', sizes: ['few', 'half'],
+    icon: svg('<rect x="6" y="4" width="13" height="16" rx="2"/><path d="M9 4v16M12 9h4M12 12.500h4"/>'),
     thoughts: [
-      'Reach for the ceiling, then let everything hang. Three slow breaths each.',
-      'Roll your shoulders back. Unclench your jaw. Notice your feet.',
-      'Find the place that is tight and give it a full minute.',
-      'Lie on the floor for a moment. That counts.',
+      'What is on your mind right now? Start mid-sentence.',
+      'Describe the room you are in, as if for someone who has never seen it.',
+      'What did today ask of you? What did it give back?',
+      'Write three lines and stop, even if there is more.',
     ],
   },
   {
-    id: 'breathing', name: 'Breathing', line: 'Three deep breaths.', sizes: ['few'],
-    icon: svg('<path d="M4 9h10a2.500 2.500 0 1 0-2.500-2.500M4 13h14a2.500 2.500 0 1 1-2.500 2.500M4 17h6"/>'),
-    thoughts: [
-      'Three deep breaths. In through the nose, and out more slowly than in.',
-      'Breathe in for four, out for six. Three times.',
-      'Let the first breath drop your shoulders, the second your jaw, the third your hands.',
-      'Three breaths by an open window.',
-    ],
-  },
-  {
-    id: 'gratitude', name: 'Gratitude', line: 'Notice what is already here.', sizes: ['few'],
+    id: 'gratitude', kind: 'still', name: 'Gratitude', line: 'Notice what is already here.', sizes: ['few'],
     icon: svg('<path d="M12 4l1.800 5.200L19 11l-5.200 1.800L12 18l-1.800-5.200L5 11l5.200-1.800z"/>'),
     thoughts: [
       'Three small things from today. The smaller the better.',
@@ -139,17 +81,37 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'love', name: 'A little love', line: 'A hand to your heart.', sizes: ['few'],
-    icon: svg('<path d="M12 19s-7-4.300-7-9.200A3.800 3.800 0 0 1 12 7.600a3.800 3.800 0 0 1 7 2.200C19 14.700 12 19 12 19z"/>'),
+    id: 'hug', kind: 'connect', name: 'Sharing a hug', line: 'A long one, with Karthik.', sizes: ['few'],
+    icon: svg('<circle cx="9" cy="7" r="2.500"/><circle cx="15" cy="7" r="2.500"/><path d="M4.500 19v-3a4.500 4.500 0 0 1 7.500-3.300A4.500 4.500 0 0 1 19.500 16v3"/><path d="M8.500 16.500h7"/>'),
     thoughts: [
-      'Hand to your heart. Feel it going, steadily, on your behalf.',
-      'Say one kind thing to yourself, the way you would say it to a friend.',
-      'Name something you did well this week. Let it be enough.',
-      'Hand to your heart, and tell yourself: I am doing fine.',
+      'Go and find Karthik. Stay a few breaths longer than usual.',
+      'No reason needed. Let the hug be the whole plan.',
+      'Hold on until you both feel your shoulders drop.',
+      'If Karthik is not nearby, send word that one is waiting.',
     ],
   },
   {
-    id: 'inspiration', name: 'Finding inspiration', line: 'A quotation, a flower, a spark.', sizes: ['few', 'half'],
+    id: 'stretching', kind: 'move', name: 'Stretching', line: 'Unfold a little.', sizes: ['few'],
+    icon: svg('<circle cx="12" cy="5" r="2"/><path d="M12 8v7M12 10 7 6M12 10l5-4M12 15l-3 5M12 15l3 5"/>'),
+    thoughts: [
+      'Reach for the ceiling, then let everything hang. Three slow breaths each.',
+      'Roll your shoulders back. Unclench your jaw. Notice your feet.',
+      'Find the place that is tight and give it a full minute.',
+      'Lie on the floor for a moment. That counts.',
+    ],
+  },
+  {
+    id: 'haiku', kind: 'make', name: 'Writing a haiku', line: 'Five, seven, five. That is all.', sizes: ['few', 'half'],
+    icon: svg('<path d="M8 7h8M5 12h14M8 17h8"/>'),
+    thoughts: [
+      'Look around for one small thing, and give it seventeen syllables.',
+      'Write one about the weather outside the window right now.',
+      'Count the syllables on your fingers. It is part of the pleasure.',
+      'Write one for someone, and tuck it where they will find it.',
+    ],
+  },
+  {
+    id: 'inspiration', kind: 'still', name: 'Finding inspiration', line: 'A quotation, a flower, a spark.', sizes: ['few', 'half'],
     icon: svg('<circle cx="12" cy="5.500" r="2.200"/><circle cx="15.600" cy="8" r="2.200"/><circle cx="14.200" cy="12" r="2.200"/><circle cx="9.800" cy="12" r="2.200"/><circle cx="8.400" cy="8" r="2.200"/><path d="M12 14.500V21"/>'),
     thoughts: [
       'Open your quotation collection somewhere in the middle. Read one, slowly, twice.',
@@ -159,8 +121,38 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'noticing', name: 'Looking out', line: 'A window and a few minutes.', sizes: ['few'],
-    icon: svg('<rect x="5" y="4" width="14" height="16" rx="1.500"/><path d="M12 4v16M5 12h14"/>'),
+    id: 'lettering', kind: 'connect', name: 'Lettering', line: 'A letter or a postcard.', sizes: ['few', 'half', 'open'],
+    icon: svg('<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3.500 7.500 12 13l8.500-5.500"/>'),
+    thoughts: [
+      'Who would be surprised to find your handwriting in their post box?',
+      'A postcard only needs three sentences. One of them can be about the weather.',
+      'Tell someone about one small thing you saw this week.',
+      'Begin with “I thought of you when…”',
+    ],
+  },
+  {
+    id: 'breathing', kind: 'move', name: 'Breathing', line: 'Three deep breaths.', sizes: ['few'],
+    icon: svg('<path d="M4 9h10a2.500 2.500 0 1 0-2.500-2.500M4 13h14a2.500 2.500 0 1 1-2.500 2.500M4 17h6"/>'),
+    thoughts: [
+      'Three deep breaths. In through the nose, and out more slowly than in.',
+      'Breathe in for four, out for six. Three times.',
+      'Let the first breath drop your shoulders, the second your jaw, the third your hands.',
+      'Three breaths by an open window.',
+    ],
+  },
+  {
+    id: 'crafting', kind: 'make', name: 'Crafting', line: 'Something made by hand.', sizes: ['half', 'open'],
+    icon: svg('<circle cx="7" cy="7" r="2.500"/><circle cx="7" cy="17" r="2.500"/><path d="M9 8.500 20 17M9 15.500 20 7"/>'),
+    thoughts: [
+      'Lay the materials out first. See what they suggest.',
+      'Pick up the project that is closest to hand, not the one that is most behind.',
+      'Make something small enough to finish, or do one small part of something large.',
+      'It does not have to turn out.',
+    ],
+  },
+  {
+    id: 'noticing', kind: 'still', name: 'Looking out', line: 'A window and a few minutes.', sizes: ['few'],
+    icon: svg('<path d="M6.500 21V10.500h2V8h2V5.500h3V8h2v2.500h2V21z"/><path d="M12 8.500v1.500M9.800 13.500v3.500M14.200 13.500v3.500"/>'),
     thoughts: [
       'Stand at the window. What is the sky doing?',
       'Watch the street the way you would watch a film.',
@@ -168,7 +160,17 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'tending', tint: 'sage', name: 'Tending', line: 'A plant, a shelf, one small corner.', sizes: ['few', 'half'],
+    id: 'love', kind: 'connect', name: 'A little love', line: 'A hand to your heart.', sizes: ['few'],
+    icon: svg('<path d="M12 19s-7-4.300-7-9.200A3.800 3.800 0 0 1 12 7.600a3.800 3.800 0 0 1 7 2.200C19 14.700 12 19 12 19z"/>'),
+    thoughts: [
+      'Hand to your heart. Feel it going, steadily, on your behalf.',
+      'Say one kind thing to yourself, the way you would say it to a friend.',
+      'Name something you did well this week. Let it be enough.',
+      'Hand to your heart, and tell yourself: I am doing fine.',
+    ],
+  },
+  {
+    id: 'tending', kind: 'still', name: 'Tending', line: 'A plant, a shelf, one small corner.', sizes: ['few', 'half'],
     icon: svg('<path d="M12 20v-8M12 12c0-4 3-6 7-6 0 4-3 6-7 6zM12 15c0-3-2.500-4.500-6-4.500 0 3 2.500 4.500 6 4.500z"/>'),
     thoughts: [
       'Water whatever needs watering. Look at each plant while you do.',
@@ -177,7 +179,7 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'resting', name: 'Resting', line: 'Nothing at all is also something.', sizes: ['few', 'half'],
+    id: 'resting', kind: 'still', name: 'Resting', line: 'Nothing at all is also something.', sizes: ['few', 'half'],
     icon: svg('<path d="M19 14.500A7.500 7.500 0 0 1 9.500 5a7.500 7.500 0 1 0 9.500 9.500z"/>'),
     thoughts: [
       'Lie down. Close your eyes. You do not have to sleep.',
@@ -186,8 +188,6 @@ const INVITATIONS = [
     ],
   },
 ];
-
-const TINTS = ['clay', 'blue', 'sage'];
 
 // The line under the greeting, Sunday first.
 const DAY_LINES = [
@@ -199,6 +199,8 @@ const DAY_LINES = [
   'It’s Friday. Let the week set itself down.',
   'It’s Saturday. The day is yours.',
 ];
+
+const KIND_TINTS = { make: 'blue', connect: 'clay', move: 'honey', still: 'sage' };
 
 let currentId = null;      // the invitation open in the dialog
 let currentThought = 0;
@@ -231,8 +233,7 @@ function findInvitation(id) {
 }
 
 function tintOf(item) {
-  if (item.isOwn) return 'plain';
-  return item.tint || TINTS[INVITATIONS.indexOf(item) % TINTS.length];
+  return KIND_TINTS[item.kind] || 'plain';
 }
 
 function selectedSize() {
@@ -241,7 +242,9 @@ function selectedSize() {
 
 function visibleInvitations() {
   const size = selectedSize();
-  return allInvitations().filter((item) => !state.away.includes(item.id) && (!size || item.sizes.includes(size)));
+  const kind = document.querySelector('#kind-filter input:checked').value;
+  return allInvitations().filter((item) =>
+    !state.away.includes(item.id) && (!size || item.sizes.includes(size)) && (!kind || item.kind === kind));
 }
 
 function renderInvitations() {
@@ -440,6 +443,7 @@ for (const dialog of [inviteDialog, ownDialog]) {
 }
 
 $('#time-filter').addEventListener('change', renderInvitations);
+$('#kind-filter').addEventListener('change', renderInvitations);
 
 ownForm.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -451,6 +455,7 @@ ownForm.addEventListener('submit', (event) => {
     id: `own-${Date.now().toString(36)}`,
     name,
     line: data.get('line').trim(),
+    kind: data.get('kind'),
     sizes: sizes.length ? sizes : ['few', 'half', 'open'],
   });
   saveState();

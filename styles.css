@@ -13,6 +13,8 @@
   --clay: #C98B6B;
   --clay-soft: #F4E6DD;
   --clay-deep: #8A5136;
+  --honey-soft: #F5ECD2;
+  --honey-deep: #7A6122;
   --radius: 14px;
   --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
   --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -94,6 +96,20 @@ main { padding-top: 40px; padding-bottom: 48px; min-height: 60vh; }
 .segmented input:checked + span { background: var(--sage-soft); border-color: var(--sage); color: var(--sage-text); font-weight: 500; }
 .segmented input:focus-visible + span { outline: 2px solid var(--sage); outline-offset: 2px; }
 
+#kind-filter { margin-top: 18px; }
+/* The small colour dot ties each kind to its tiles. */
+.segmented .dot::before {
+  content: "";
+  display: inline-block;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+.dot.blue::before { background: #A9BDCA; }
+.dot.clay::before { background: var(--clay); }
+.dot.honey::before { background: #D9BC6A; }
+.dot.sage::before { background: var(--sage); }
+
 .choose { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 24px 0 20px; }
 .choose span { color: var(--muted); font-size: 14px; }
 
@@ -164,6 +180,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 .invite-icon.clay { background: var(--clay-soft); color: var(--clay-deep); }
 .invite-icon.blue { background: var(--blue-soft); color: var(--blue-deep); }
 .invite-icon.sage { background: var(--sage-soft); color: var(--sage-text); }
+.invite-icon.honey { background: var(--honey-soft); color: var(--honey-deep); }
 .invite-icon.plain { border: 1px dashed var(--line); color: var(--muted); }
 .invite-icon.large { width: 64px; height: 64px; border-radius: 16px; }
 .invite-icon.large svg { width: 34px; height: 34px; }
