@@ -3,7 +3,14 @@
 // Everything is stored in this browser (localStorage); there is no server.
 
 const STORE_KEY = 'selma-time.v1';
-const TRAIL_KEEPS = 120; // older marks quietly fall off the end
+const TRAIL_KEEPS = 36; // older marks quietly fall off the end
+
+// The trail is a loop of places Selma can be: lanes she wanders along, back and forth.
+// By the time she comes round to the top again, the marks there have long faded.
+const TRAIL_COLS = 8;
+const TRAIL_LANES = 6;
+const TRAIL_SLOTS = TRAIL_COLS * TRAIL_LANES;
+const LANE_HEIGHT = 78;
 const state = loadState();
 
 const $ = (sel) => document.querySelector(sel);
@@ -244,7 +251,7 @@ function loadState() {
     const data = JSON.parse(localStorage.getItem(STORE_KEY));
     if (data && Array.isArray(data.own) && Array.isArray(data.trail)) return data;
   } catch {}
-  // own: invitations Ashton added; trail: ids only, no dates.
+  // own: invitations Ashton added; trail: ids only, no dates; head: where on the loop the newest mark sits.
   return { own: [], trail: [] };
 }
 
@@ -343,6 +350,7 @@ function letSelmaChoose() {
 }
 
 function go() {
+  state.head = (trailHead() + 1) % TRAIL_SLOTS;
   state.trail.unshift(currentId);
   state.trail.length = Math.min(state.trail.length, TRAIL_KEEPS);
   saveState();
@@ -363,28 +371,81 @@ function removeOwn() {
 
 // ---------- trail ----------
 
+// Trails begun before Selma wandered have no head yet; start them from the top.
+function trailHead() {
+  if (Number.isInteger(state.head)) return state.head;
+  return Math.min(state.trail.length, TRAIL_KEEPS) - 1;
+}
+
+// Where a place on the loop sits: x in percent of the width, y in pixels.
+function trailPoint(slot) {
+  const lane = Math.floor(slot / TRAIL_COLS);
+  const leftward = lane % 2 === 1;
+  const step = slot % TRAIL_COLS;
+  const col = leftward ? TRAIL_COLS - 1 - step : step;
+  const wander = 13 * Math.sin(slot * 0.9 + 1.3) + 7 * Math.sin(slot * 2.3 + 0.4);
+  return { x: 7 + col * (86 / (TRAIL_COLS - 1)), y: 46 + lane * LANE_HEIGHT + wander, lane, leftward };
+}
+
 function renderTrail() {
   const trail = $('#trail');
-  const marks = state.trail.map(findInvitation).filter(Boolean);
+  const marks = state.trail.slice(0, TRAIL_KEEPS).map(findInvitation).filter(Boolean);
   if (!marks.length) {
     trail.innerHTML = `<div class="empty"><img src="selma-time.svg" alt=""><h3>No trail yet</h3><p>It begins whenever you do. There is no hurry.</p></div>`;
     return;
   }
   trail.innerHTML = `
-    <p class="trail-intro">Where the slow time has gone lately. Nothing is counted or dated, and the oldest marks fade on their own.</p>
-    <div class="trail-path"><img src="selma-time.svg" alt=""></div>
+    <p class="trail-intro">Selma wanders a little further with each thing you choose. Nothing is counted or dated, and the oldest marks fade behind her.</p>
+    <div class="trail-path"></div>
     <div class="trail-actions"><button class="link" data-action="sweep">Sweep the trail clean</button></div>`;
   const path = trail.querySelector('.trail-path');
+
+  // Selma sits one place ahead of the newest mark; the rest follow behind her.
+  const head = trailHead();
+  const slotOf = (index) => (((head - index) % TRAIL_SLOTS) + TRAIL_SLOTS) % TRAIL_SLOTS;
+  const selma = trailPoint((head + 1) % TRAIL_SLOTS);
+  const points = marks.map((item, index) => trailPoint(slotOf(index)));
+  const lanes = Math.max(selma.lane, ...points.map((point) => point.lane)) + 1;
+  const height = lanes * LANE_HEIGHT + 14;
+  path.style.height = `${height}px`;
+
+  // The dotted line runs from the oldest mark up to Selma, pausing where the loop starts over.
+  const walked = [...points].reverse().concat(selma);
+  const stretches = [[]];
+  walked.forEach((point, index) => {
+    if (index && point.lane < walked[index - 1].lane) stretches.push([]);
+    stretches.at(-1).push(point);
+  });
+  const line = stretches.filter((stretch) => stretch.length > 1).map((stretch) => {
+    let d = `M${stretch[0].x} ${stretch[0].y}`;
+    for (let i = 1; i < stretch.length - 1; i += 1) {
+      const next = stretch[i + 1];
+      d += ` Q${stretch[i].x} ${stretch[i].y} ${(stretch[i].x + next.x) / 2} ${(stretch[i].y + next.y) / 2}`;
+    }
+    return `${d} L${stretch.at(-1).x} ${stretch.at(-1).y}`;
+  }).join(' ');
+  path.innerHTML = `<svg viewBox="0 0 100 ${height}" preserveAspectRatio="none" aria-hidden="true"><path d="${line}"/></svg>`;
+
   marks.forEach((item, index) => {
     const mark = document.createElement('button');
     mark.className = `invite-icon ${tintOf(item)}`;
     mark.dataset.mark = item.name;
     mark.title = item.name;
     mark.setAttribute('aria-label', item.name);
-    mark.style.opacity = Math.max(0.3, 1 - index * 0.012).toFixed(2);
+    mark.style.left = `${points[index].x}%`;
+    mark.style.top = `${points[index].y}px`;
+    mark.style.opacity = (1 - (index / TRAIL_KEEPS) * 0.88).toFixed(2);
     mark.innerHTML = item.icon;
     path.append(mark);
   });
+
+  const snail = document.createElement('img');
+  snail.src = 'selma-time.svg';
+  snail.alt = 'Selma';
+  snail.style.left = `${selma.x}%`;
+  snail.style.top = `${selma.y}px`;
+  if (selma.leftward) snail.classList.add('leftward');
+  path.append(snail);
 }
 
 // ---------- greeting + clock ----------
@@ -462,6 +523,7 @@ document.addEventListener('click', (event) => {
   if (action === 'sweep') {
     if (confirm('Sweep the trail clean? This only clears the marks; your invitations stay.')) {
       state.trail = [];
+      delete state.head;
       saveState();
       renderTrail();
     }

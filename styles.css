@@ -189,17 +189,29 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 /* Trail */
 .trail-intro { color: var(--muted); margin: 0 0 24px; max-width: 46ch; }
 .trail-path {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  padding: 20px;
+  position: relative;
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius);
+  overflow: hidden;
 }
-.trail-path img { width: 52px; height: 52px; margin-right: 4px; }
+.trail-path > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.trail-path > svg path {
+  fill: none;
+  stroke: var(--sage);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-dasharray: 0.1 9;
+  vector-effect: non-scaling-stroke;
+  opacity: .65;
+}
+.trail-path .invite-icon, .trail-path img {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
 .trail-path .invite-icon { border-radius: 50%; border: 0; padding: 0; cursor: default; }
+.trail-path img { width: 52px; height: 52px; }
+.trail-path img.leftward { transform: translate(-50%, -50%) scaleX(-1); }
 .trail-actions { margin-top: 16px; }
 
 .empty { text-align: center; padding: 48px 20px; color: var(--muted); }
@@ -290,6 +302,9 @@ footer p { margin: 0; flex: 1 1 260px; }
   .hello h2 { font-size: 32px; }
   .invites { grid-template-columns: 1fr; }
   .choose .btn { flex: 1 1 100%; }
+  .trail-path .invite-icon { width: 30px; height: 30px; }
+  .trail-path .invite-icon svg { width: 17px; height: 17px; }
+  .trail-path img { width: 42px; height: 42px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
