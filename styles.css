@@ -186,8 +186,6 @@ button:focus-visible, input:focus-visible, a:focus-visible {
 .invite-icon.large { width: 64px; height: 64px; border-radius: 16px; }
 .invite-icon.large svg { width: 34px; height: 34px; }
 
-.hidden-note { color: var(--muted); font-size: 14px; margin: 18px 0 0; }
-
 /* Trail */
 .trail-intro { color: var(--muted); margin: 0 0 24px; max-width: 46ch; }
 .trail-path {

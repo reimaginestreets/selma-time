@@ -242,10 +242,10 @@ let chosenBySelma = false;
 function loadState() {
   try {
     const data = JSON.parse(localStorage.getItem(STORE_KEY));
-    if (data && Array.isArray(data.own) && Array.isArray(data.away) && Array.isArray(data.trail)) return data;
+    if (data && Array.isArray(data.own) && Array.isArray(data.trail)) return data;
   } catch {}
-  // own: invitations Ashton added; away: ids put out of sight; trail: ids only, no dates.
-  return { own: [], away: [], trail: [] };
+  // own: invitations Ashton added; trail: ids only, no dates.
+  return { own: [], trail: [] };
 }
 
 function saveState() {
@@ -276,7 +276,7 @@ function visibleInvitations() {
   const kind = document.querySelector('#kind-filter input:checked').value;
   const out = document.querySelector('#place-filter input:checked').value === 'out';
   return allInvitations().filter((item) =>
-    !state.away.includes(item.id) && (!size || item.sizes.includes(size)) && (!kind || item.kind === kind) && !(out && item.home));
+    (!size || item.sizes.includes(size)) && (!kind || item.kind === kind) && !(out && item.home));
 }
 
 function renderInvitations() {
@@ -296,13 +296,6 @@ function renderInvitations() {
   own.dataset.action = 'new-own';
   own.innerHTML = `<div class="invite-icon plain">${PLUS_ICON}</div><div>Add your own</div>`;
   list.append(own);
-
-  const note = $('#hidden-note');
-  note.hidden = state.away.length === 0;
-  if (state.away.length) {
-    const count = state.away.length === 1 ? 'One invitation is' : `${state.away.length} invitations are`;
-    note.innerHTML = `${count} put away. <button class="link" data-action="bring-back">Bring them back</button>`;
-  }
 }
 
 function openInvitation(id, bySelma) {
@@ -324,7 +317,7 @@ function openInvitation(id, bySelma) {
   $('#another-thought').hidden = thoughts.length < 2;
   $('#mail-link').hidden = id !== 'lettering';
   $('#not-this').textContent = bySelma ? 'Something else' : 'Not this one';
-  $('#hide-invite').textContent = item.isOwn ? 'Remove' : 'Put this one away';
+  $('#hide-invite').hidden = !item.isOwn;
   if (!inviteDialog.open) inviteDialog.showModal();
 }
 
@@ -358,19 +351,14 @@ function go() {
   renderTrail();
 }
 
-function putAway() {
-  const item = findInvitation(currentId);
-  if (item.isOwn) {
-    state.own = state.own.filter((own) => own.id !== currentId);
-    state.trail = state.trail.filter((id) => id !== currentId);
-  } else {
-    state.away.push(currentId);
-  }
+function removeOwn() {
+  state.own = state.own.filter((own) => own.id !== currentId);
+  state.trail = state.trail.filter((id) => id !== currentId);
   saveState();
   inviteDialog.close();
   renderInvitations();
   renderTrail();
-  toast(item.isOwn ? 'Removed.' : 'Put away. You can bring it back any time.');
+  toast('Removed.');
 }
 
 // ---------- trail ----------
@@ -468,10 +456,9 @@ document.addEventListener('click', (event) => {
     else inviteDialog.close();
   }
   if (action === 'go') go();
-  if (action === 'hide-invite') putAway();
+  if (action === 'remove-own') removeOwn();
   if (action === 'close-dialog') event.target.closest('dialog').close();
   if (action === 'new-own') { ownForm.reset(); ownDialog.showModal(); }
-  if (action === 'bring-back') { state.away = []; saveState(); renderInvitations(); }
   if (action === 'sweep') {
     if (confirm('Sweep the trail clean? This only clears the marks; your invitations stay.')) {
       state.trail = [];
