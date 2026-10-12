@@ -96,7 +96,8 @@ main { padding-top: 40px; padding-bottom: 48px; min-height: 60vh; }
 .segmented input:checked + span { background: var(--sage-soft); border-color: var(--sage); color: var(--sage-text); font-weight: 500; }
 .segmented input:focus-visible + span { outline: 2px solid var(--sage); outline-offset: 2px; }
 
-#kind-filter { margin-top: 18px; }
+#kind-filter, #place-filter { margin-top: 18px; }
+#choose-start { margin-top: 0; }
 /* The small colour dot ties each kind to its tiles. */
 .segmented .dot::before {
   content: "";

@@ -52,26 +52,41 @@
         <p id="greeting-sub"></p>
       </div>
 
-      <fieldset class="segmented" id="time-filter">
-        <legend>How much time is there?</legend>
-        <label><input type="radio" name="size" value="" checked><span>Not sure</span></label>
-        <label><input type="radio" name="size" value="few"><span>A few minutes</span></label>
-        <label><input type="radio" name="size" value="half"><span>Half an hour or so</span></label>
-        <label><input type="radio" name="size" value="open"><span>An open stretch</span></label>
-      </fieldset>
-
-      <fieldset class="segmented" id="kind-filter">
-        <legend>It'd be nice to…</legend>
-        <label><input type="radio" name="kind" value="" checked><span>Anything</span></label>
-        <label><input type="radio" name="kind" value="make"><span class="dot blue">Make</span></label>
-        <label><input type="radio" name="kind" value="connect"><span class="dot clay">Connect</span></label>
-        <label><input type="radio" name="kind" value="move"><span class="dot honey">Move</span></label>
-        <label><input type="radio" name="kind" value="still"><span class="dot sage">Be still</span></label>
-      </fieldset>
-
-      <div class="choose">
-        <button class="btn primary" data-action="choose">Let Selma choose</button>
+      <div class="choose" id="choose-start">
+        <button class="btn primary" data-action="show-questions">Let Selma choose</button>
+        <button class="link" data-action="surprise">Surprise me</button>
         <span>or pick whatever calls to you</span>
+      </div>
+
+      <!-- Selma's three questions stay out of the way until she is asked to choose. -->
+      <div id="questions" hidden>
+        <fieldset class="segmented" id="time-filter">
+          <legend>How much time is there?</legend>
+          <label><input type="radio" name="size" value="" checked><span>Not sure</span></label>
+          <label><input type="radio" name="size" value="few"><span>A few minutes</span></label>
+          <label><input type="radio" name="size" value="half"><span>Half an hour or so</span></label>
+          <label><input type="radio" name="size" value="open"><span>An open stretch</span></label>
+        </fieldset>
+
+        <fieldset class="segmented" id="kind-filter">
+          <legend>It'd be nice to…</legend>
+          <label><input type="radio" name="kind" value="" checked><span>Anything</span></label>
+          <label><input type="radio" name="kind" value="make"><span class="dot blue">Make</span></label>
+          <label><input type="radio" name="kind" value="connect"><span class="dot clay">Connect</span></label>
+          <label><input type="radio" name="kind" value="move"><span class="dot honey">Move</span></label>
+          <label><input type="radio" name="kind" value="still"><span class="dot sage">Be still</span></label>
+        </fieldset>
+
+        <fieldset class="segmented" id="place-filter">
+          <legend>Where are you?</legend>
+          <label><input type="radio" name="place" value="" checked><span>At home</span></label>
+          <label><input type="radio" name="place" value="out"><span>Out and about</span></label>
+        </fieldset>
+
+        <div class="choose">
+          <button class="btn primary" data-action="choose">Choose for me</button>
+          <button class="link" data-action="hide-questions">Never mind</button>
+        </div>
       </div>
 
       <div class="invites" id="invites"></div>
@@ -131,6 +146,11 @@
         <label><input type="radio" name="kind" value="connect"><span>Connect</span></label>
         <label><input type="radio" name="kind" value="move"><span>Move</span></label>
         <label><input type="radio" name="kind" value="still"><span>Be still</span></label>
+      </fieldset>
+      <fieldset class="segmented">
+        <legend>It can happen…</legend>
+        <label><input type="radio" name="place" value="any" checked><span>Anywhere</span></label>
+        <label><input type="radio" name="place" value="home"><span>Only at home</span></label>
       </fieldset>
       <fieldset class="segmented">
         <legend>It fits into…</legend>

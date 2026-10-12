@@ -18,10 +18,11 @@ const PLUS_ICON = svg('<path d="M12 6v12M6 12h12"/>');
 // sizes: few = a few minutes, half = half an hour or so, open = an open stretch.
 // Each invitation has a few thoughts; one is shown at a time.
 // kind: make, connect, move or still. It sets the tile colour and the "It'd be nice to…" filter.
+// home: true marks the ones that need to be at home; they are hidden when out and about.
 // The order mixes the kinds so the colours are spread around the grid.
 const INVITATIONS = [
   {
-    id: 'reading', kind: 'still', name: 'Reading', line: 'A few pages, on paper.', sizes: ['few', 'half', 'open'],
+    id: 'reading', home: true, kind: 'still', name: 'Reading', line: 'A few pages, on paper.', sizes: ['few', 'half', 'open'],
     icon: svg('<path d="M12 7c-2-1.5-5-2-8-1.5v12c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-12c-3-.5-6 0-8 1.5z"/><path d="M12 7v12"/>'),
     thoughts: [
       'Pick up the book that is already open somewhere in the house.',
@@ -31,7 +32,7 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'writing', kind: 'make', name: 'Writing', line: 'The scholarly kind, unhurried.', sizes: ['half', 'open'],
+    id: 'writing', home: true, kind: 'make', name: 'Writing', line: 'The scholarly kind, unhurried.', sizes: ['half', 'open'],
     icon: svg('<path d="M12 21l-4.500-8L10 5h4l2.500 8z"/><path d="M12 21v-6.500"/><circle cx="12" cy="13" r="1.300"/><path d="M10 5V3h4v2"/>'),
     thoughts: [
       'One paragraph, by hand first. It does not have to be the next paragraph.',
@@ -81,7 +82,7 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'hug', kind: 'connect', name: 'Sharing a hug', line: 'A long one, with Karthik.', sizes: ['few'],
+    id: 'hug', home: true, kind: 'connect', name: 'Sharing a hug', line: 'A long one, with Karthik.', sizes: ['few'],
     icon: svg('<circle cx="9" cy="7" r="2.500"/><circle cx="15" cy="7" r="2.500"/><path d="M4.500 19v-3a4.500 4.500 0 0 1 7.500-3.300A4.500 4.500 0 0 1 19.500 16v3"/><path d="M8.500 16.500h7"/>'),
     thoughts: [
       'Go and find Karthik. Stay a few breaths longer than usual.',
@@ -121,7 +122,7 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'lettering', kind: 'connect', name: 'Lettering', line: 'A letter or a postcard.', sizes: ['few', 'half', 'open'],
+    id: 'lettering', home: true, kind: 'connect', name: 'Lettering', line: 'A letter or a postcard.', sizes: ['few', 'half', 'open'],
     icon: svg('<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3.500 7.500 12 13l8.500-5.500"/>'),
     thoughts: [
       'Who would be surprised to find your handwriting in their post box?',
@@ -141,7 +142,7 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'crafting', kind: 'make', name: 'Crafting', line: 'Something made by hand.', sizes: ['half', 'open'],
+    id: 'crafting', home: true, kind: 'make', name: 'Crafting', line: 'Something made by hand.', sizes: ['half', 'open'],
     icon: svg('<circle cx="7" cy="7" r="2.500"/><circle cx="7" cy="17" r="2.500"/><path d="M9 8.500 20 17M9 15.500 20 7"/>'),
     thoughts: [
       'Lay the materials out first. See what they suggest.',
@@ -170,7 +171,7 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'tending', kind: 'still', name: 'Tending', line: 'A plant, a shelf, one small corner.', sizes: ['few', 'half'],
+    id: 'tending', home: true, kind: 'still', name: 'Tending', line: 'A plant, a shelf, one small corner.', sizes: ['few', 'half'],
     icon: svg('<path d="M12 20v-8M12 12c0-4 3-6 7-6 0 4-3 6-7 6zM12 15c0-3-2.500-4.500-6-4.500 0 3 2.500 4.500 6 4.500z"/>'),
     thoughts: [
       'Water whatever needs watering. Look at each plant while you do.',
@@ -179,7 +180,7 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'dancing', kind: 'move', name: 'Dancing', line: 'No music needed.', sizes: ['few'],
+    id: 'dancing', home: true, kind: 'move', name: 'Dancing', line: 'No music needed.', sizes: ['few'],
     icon: svg('<circle cx="12" cy="5" r="2"/><path d="M5.500 8.500l2.700 2.700L12 9.800l3.800-1.300 2.700 2.700"/><path d="M12 9.800v4.700M12 14.500l-3 6M12 14.500l3 6"/>'),
     thoughts: [
       'Shake it off: hands, arms, shoulders, the whole thing. Thirty seconds.',
@@ -199,7 +200,7 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'kalimba', kind: 'still', name: 'Playing the kalimba', line: 'A few notes, going nowhere.', sizes: ['few'],
+    id: 'kalimba', home: true, kind: 'still', name: 'Playing the kalimba', line: 'A few notes, going nowhere.', sizes: ['few'],
     icon: svg('<rect x="5.500" y="4" width="13" height="16" rx="3"/><path d="M9 4v8M12 4v11M15 4v8"/>'),
     thoughts: [
       'Pluck a few notes and let each one ring out before the next.',
@@ -209,7 +210,7 @@ const INVITATIONS = [
     ],
   },
   {
-    id: 'resting', kind: 'still', name: 'Resting', line: 'Nothing at all is also something.', sizes: ['few', 'half'],
+    id: 'resting', home: true, kind: 'still', name: 'Resting', line: 'Nothing at all is also something.', sizes: ['few', 'half'],
     icon: svg('<path d="M19 14.500A7.500 7.500 0 0 1 9.500 5a7.500 7.500 0 1 0 9.500 9.500z"/>'),
     thoughts: [
       'Lie down. Close your eyes. You do not have to sleep.',
@@ -273,8 +274,9 @@ function selectedSize() {
 function visibleInvitations() {
   const size = selectedSize();
   const kind = document.querySelector('#kind-filter input:checked').value;
+  const out = document.querySelector('#place-filter input:checked').value === 'out';
   return allInvitations().filter((item) =>
-    !state.away.includes(item.id) && (!size || item.sizes.includes(size)) && (!kind || item.kind === kind));
+    !state.away.includes(item.id) && (!size || item.sizes.includes(size)) && (!kind || item.kind === kind) && !(out && item.home));
 }
 
 function renderInvitations() {
@@ -329,6 +331,16 @@ function openInvitation(id, bySelma) {
 function showThought(item) {
   const thoughts = item.thoughts || [];
   $('#invite-prompt').textContent = thoughts[currentThought] || item.line || 'Whenever you are ready.';
+}
+
+// The questions appear only once Selma is asked to choose. Putting them away clears the answers.
+function showQuestions(show) {
+  $('#choose-start').hidden = show;
+  $('#questions').hidden = !show;
+  if (!show) {
+    for (const first of document.querySelectorAll('#questions fieldset label:first-of-type input')) first.checked = true;
+    renderInvitations();
+  }
 }
 
 function letSelmaChoose() {
@@ -443,7 +455,9 @@ document.addEventListener('click', (event) => {
   const action = event.target.closest('[data-action]')?.dataset.action;
   if (!action) return;
 
-  if (action === 'choose') { currentId = null; letSelmaChoose(); }
+  if (action === 'show-questions') showQuestions(true);
+  if (action === 'hide-questions') showQuestions(false);
+  if (action === 'choose' || action === 'surprise') { currentId = null; letSelmaChoose(); }
   if (action === 'another-thought') {
     const item = findInvitation(currentId);
     currentThought = (currentThought + 1) % item.thoughts.length;
@@ -474,6 +488,7 @@ for (const dialog of [inviteDialog, ownDialog]) {
 
 $('#time-filter').addEventListener('change', renderInvitations);
 $('#kind-filter').addEventListener('change', renderInvitations);
+$('#place-filter').addEventListener('change', renderInvitations);
 
 ownForm.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -486,6 +501,7 @@ ownForm.addEventListener('submit', (event) => {
     name,
     line: data.get('line').trim(),
     kind: data.get('kind'),
+    home: data.get('place') === 'home',
     sizes: sizes.length ? sizes : ['few', 'half', 'open'],
   });
   saveState();
