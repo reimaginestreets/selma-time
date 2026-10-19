@@ -124,7 +124,7 @@ const INVITATIONS = [
     thoughts: [
       'Open your quotation collection somewhere in the middle. Read one, slowly, twice.',
       'Find a flower photo you had forgotten about. Remember where you were standing.',
-      'Copy out a favourite quotation by hand.',
+      'Copy out a favorite quotation by hand.',
       'Choose one quotation to carry with you for the rest of the day.',
     ],
   },
