@@ -243,6 +243,8 @@ const KIND_TINTS = { make: 'blue', connect: 'clay', move: 'honey', still: 'sage'
 let currentId = null;      // the invitation open in the dialog
 let currentThought = 0;
 let chosenBySelma = false;
+let telling = false;       // tapping tiles adds them to the trail instead of opening them
+const picked = new Set();
 
 // ---------- storage ----------
 
@@ -293,11 +295,16 @@ function renderInvitations() {
     const card = document.createElement('button');
     card.className = 'invite';
     card.dataset.invite = item.id;
+    if (telling) {
+      card.classList.toggle('picked', picked.has(item.id));
+      card.setAttribute('aria-pressed', picked.has(item.id));
+    }
     card.innerHTML = `<div class="invite-icon ${tintOf(item)}">${item.icon}</div><div><h3></h3><p></p></div>`;
     card.querySelector('h3').textContent = item.name;
     card.querySelector('p').textContent = item.line || '';
     list.append(card);
   }
+  if (telling) return;
   const own = document.createElement('button');
   own.className = 'invite own';
   own.dataset.action = 'new-own';
@@ -349,14 +356,58 @@ function letSelmaChoose() {
   openInvitation(options[Math.floor(Math.random() * options.length)].id, true);
 }
 
-function go() {
-  state.head = (trailHead() + 1) % TRAIL_SLOTS;
-  state.trail.unshift(currentId);
+// Going to do something and having already done it leave the same mark.
+function addMarks(ids) {
+  for (const id of ids) {
+    state.head = (trailHead() + 1) % TRAIL_SLOTS;
+    state.trail.unshift(id);
+  }
   state.trail.length = Math.min(state.trail.length, TRAIL_KEEPS);
   saveState();
+  renderTrail();
+}
+
+function showFarewell(title, text) {
+  $('#farewell-title').textContent = title;
+  $('#farewell-text').textContent = text;
   $('#invitation').hidden = true;
   $('#farewell').hidden = false;
-  renderTrail();
+  if (!inviteDialog.open) inviteDialog.showModal();
+}
+
+function go() {
+  addMarks([currentId]);
+  showFarewell('Off you go.', 'You can close this tab now. Selma will keep the time.');
+}
+
+function alreadyDid() {
+  addMarks([currentId]);
+  showFarewell('Noticed.', 'That counts. It’s on Selma’s trail now.');
+}
+
+function startTelling(on) {
+  telling = on;
+  picked.clear();
+  showQuestions(false);
+  $('#choose-start').hidden = on;
+  $('#telling').hidden = !on;
+  $('#tell-button').disabled = true;
+  renderInvitations();
+}
+
+function togglePicked(card) {
+  const id = card.dataset.invite;
+  if (picked.has(id)) picked.delete(id);
+  else picked.add(id);
+  card.classList.toggle('picked', picked.has(id));
+  card.setAttribute('aria-pressed', picked.has(id));
+  $('#tell-button').disabled = picked.size === 0;
+}
+
+function tell() {
+  addMarks([...picked]);
+  startTelling(false);
+  showFarewell('Noticed.', 'It all counts. Selma has added it to her trail.');
 }
 
 function removeOwn() {
@@ -395,7 +446,7 @@ function renderTrail() {
     return;
   }
   trail.innerHTML = `
-    <p class="trail-intro">Selma wanders a little further with each thing you choose. Nothing is counted or dated, and the oldest marks fade behind her.</p>
+    <p class="trail-intro">Selma wanders a little further with every slow moment, whether you went looking for it or it found you. Nothing is counted or dated, and the oldest marks fade behind her.</p>
     <div class="trail-path"></div>
     <div class="trail-actions"><button class="link" data-action="sweep">Sweep the trail clean</button></div>`;
   const path = trail.querySelector('.trail-path');
@@ -459,7 +510,9 @@ function renderGreeting() {
   else if (hour < 17) hello = 'Good afternoon.';
   else if (hour >= 22) hello = 'A late hour.';
   $('#greeting').textContent = hello;
-  $('#greeting-sub').textContent = `${DAY_LINES[now.getDay()]} What would feel good right now?`;
+  // In the evening Selma asks about the day as well as the moment.
+  const ask = hour >= 18 || hour < 5 ? 'Did any slow moments find you today?' : 'What would feel good right now?';
+  $('#greeting-sub').textContent = `${DAY_LINES[now.getDay()]} ${ask}`;
 }
 
 function setClock() {
@@ -496,7 +549,7 @@ document.addEventListener('click', (event) => {
   if (tab) return showView(tab.dataset.view);
 
   const card = event.target.closest('[data-invite]');
-  if (card) return openInvitation(card.dataset.invite, false);
+  if (card) return telling ? togglePicked(card) : openInvitation(card.dataset.invite, false);
 
   const mark = event.target.closest('[data-mark]');
   if (mark) return toast(mark.dataset.mark);
@@ -517,6 +570,10 @@ document.addEventListener('click', (event) => {
     else inviteDialog.close();
   }
   if (action === 'go') go();
+  if (action === 'did') alreadyDid();
+  if (action === 'start-telling') startTelling(true);
+  if (action === 'stop-telling') startTelling(false);
+  if (action === 'tell') tell();
   if (action === 'remove-own') removeOwn();
   if (action === 'close-dialog') event.target.closest('dialog').close();
   if (action === 'new-own') { ownForm.reset(); ownDialog.showModal(); }

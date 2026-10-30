@@ -54,9 +54,17 @@
       </div>
 
       <div class="choose" id="choose-start">
+        <button class="btn primary" data-action="start-telling">Tell Selma</button>
         <button class="btn primary" data-action="show-questions">Let Selma choose</button>
         <button class="link" data-action="surprise">Surprise me</button>
         <span>or pick whatever calls to you</span>
+      </div>
+
+      <!-- Telling Selma: tap the tiles for whatever already happened. -->
+      <div class="choose telling" id="telling" hidden>
+        <p>Tap whatever you've done. Big or small, planned or not, it all counts.</p>
+        <button class="btn primary" data-action="tell" id="tell-button" disabled>Add to the trail</button>
+        <button class="link" data-action="stop-telling">Never mind</button>
       </div>
 
       <!-- Selma's three questions stay out of the way until she is asked to choose. -->
@@ -115,6 +123,7 @@
       <a class="link" id="mail-link" href="https://reimaginestreets.github.io/selma/" target="_blank" rel="noopener" hidden>Open the mail journal</a>
       <div class="dialog-actions">
         <button type="button" class="btn primary" data-action="go">I'll go do this</button>
+        <button type="button" class="btn quiet" data-action="did">I already did this</button>
         <button type="button" class="btn quiet" data-action="not-this" id="not-this">Not this one</button>
         <span class="spacer"></span>
         <button type="button" class="btn danger" data-action="remove-own" id="hide-invite" hidden>Remove</button>
@@ -122,8 +131,8 @@
     </div>
     <div class="invitation farewell" id="farewell" hidden>
       <img src="selma-time.svg" alt="" width="88" height="88">
-      <h2>Off you go.</h2>
-      <p class="prompt">You can close this tab now. Selma will keep the time.</p>
+      <h2 id="farewell-title">Off you go.</h2>
+      <p class="prompt" id="farewell-text">You can close this tab now. Selma will keep the time.</p>
       <div class="dialog-actions centered">
         <button type="button" class="btn quiet" data-action="close-dialog">Close</button>
       </div>

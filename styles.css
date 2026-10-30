@@ -169,6 +169,17 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   transition: border-color .15s, transform .15s;
 }
 .invite:hover { border-color: var(--sage); transform: translateY(-1px); }
+.invite { position: relative; }
+.invite.picked { border-color: var(--sage-deep); background: var(--sage-soft); box-shadow: inset 0 0 0 1px var(--sage-deep); }
+.invite.picked::after {
+  content: "✓";
+  position: absolute;
+  top: 8px; right: 12px;
+  color: var(--sage-text);
+  font-weight: 600;
+}
+.telling p { margin: 0; flex: 1 1 100%; color: var(--ink); }
+.btn:disabled { opacity: .5; cursor: default; }
 .invite h3 { margin: 0; font: 500 19px/1.3 var(--serif); }
 .invite p { margin: 2px 0 0; color: var(--muted); font-size: 14px; line-height: 1.4; }
 .invite.own { background: none; border-style: dashed; align-items: center; color: var(--muted); }
